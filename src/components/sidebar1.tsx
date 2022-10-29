@@ -28,7 +28,7 @@ function Sidebar1() {
   }
 
   return (
-    <div className=" h-full w-60  rounded bg-gray-50 px-3 py-4 dark:bg-gray-800">
+    <div className=" h-full w-60 bg-gray-50 px-3 py-4 dark:bg-gray-800">
       <div className="my-4 text-center">
         <img
           src="/images/avatars/femal-avatar1.png"
