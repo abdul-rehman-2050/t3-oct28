@@ -8,7 +8,7 @@ function Test1() {
   
 
   return (
-    <Dashboar1Layout>      
+    <Dashboar1Layout bgcolor="bg-white">      
         <div className="flex flex-wrap">
             <FlexCardsMultiple cardnum={5}/>
         </div>
