@@ -2,7 +2,7 @@ import React from 'react'
 
 function Appbar() {
   return (
-    <div className="sticky top-0 h-14 bg-blue-500 p-4 shadow-md">
+    <div className="sticky top-0 h-14 bg-bs-primary p-4 shadow-md">
         <svg
           aria-label="Ripples. Logo"
           role="img"
