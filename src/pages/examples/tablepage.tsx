@@ -1,7 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 import React from "react";
 import { FlexSearch } from "../../components/general/flexsearch";
+import StatusBadge from "../../components/general/status-badge";
 import PanelLayout from "../../layouts/panel";
+import { faker } from "@faker-js/faker";
+import ImageUserNameRow from "../../components/users/image-username-row";
 
 const tableHeaders = [
   "username",
@@ -11,10 +14,46 @@ const tableHeaders = [
   "Status",
 ];
 
+
+
+const Users = {
+  id: faker.datatype.uuid(),
+  firstName: faker.name.firstName(),
+  lastName: faker.name.lastName(),
+  picture: "/images/men" + faker.datatype.number + ".jpg",
+};
+
+function generateUsers(num:number) {
+  const users = [];
+
+  for (let id = 1; id <= num; id++) {
+    const firstName = faker.name.firstName();
+    const lastName = faker.name.lastName();
+    const email = faker.internet.email();
+
+    users.push({
+      id: faker.datatype.uuid(),
+      first_name: firstName,
+      last_name: lastName,
+      email: email,
+      picture: "/images/men/" + id + ".jpg",
+      date: faker.date.past(),
+      status: faker.image.avatar()
+    });
+  }
+
+  return users;
+}
+
+
+
 function TablePage() {
+    const users = generateUsers(2);
   return (
     <PanelLayout>
+        {JSON.stringify(users)}
       <div className="w-full rounded-md bg-white p-8">
+      
         <div className=" flex items-center justify-between pb-6">
           <div>
             <h2 className="font-semibold text-gray-600">Products Oder</h2>
@@ -55,20 +94,7 @@ function TablePage() {
                 <tbody>
                   <tr>
                     <td className="border-b border-gray-200 bg-white px-5 py-5 text-sm">
-                      <div className="flex items-center">
-                        <div className="h-10 w-10 flex-shrink-0">
-                          <img
-                            className="h-full w-full rounded-full"
-                            src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80"
-                            alt=""
-                          />
-                        </div>
-                        <div className="ml-3">
-                          <p className="whitespace-no-wrap text-gray-900">
-                            Vera Carpenter
-                          </p>
-                        </div>
-                      </div>
+                      <ImageUserNameRow img="/images/women/0.jpg" name={users[0]?.first_name as string}/>
                     </td>
                     <td className="border-b border-gray-200 bg-white px-5 py-5 text-sm">
                       <p className="whitespace-no-wrap text-gray-900">Admin</p>
@@ -82,13 +108,7 @@ function TablePage() {
                       <p className="whitespace-no-wrap text-gray-900">43</p>
                     </td>
                     <td className="border-b border-gray-200 bg-white px-5 py-5 text-sm">
-                      <span className="relative inline-block px-3 py-1 font-semibold leading-tight text-green-900">
-                        <span
-                          aria-hidden
-                          className="absolute inset-0 rounded-full bg-green-200 opacity-50"
-                        ></span>
-                        <span className="relative">Activo</span>
-                      </span>
+                      <StatusBadge status="Active" />
                     </td>
                   </tr>
                   <tr>
@@ -120,13 +140,7 @@ function TablePage() {
                       <p className="whitespace-no-wrap text-gray-900">77</p>
                     </td>
                     <td className="border-b border-gray-200 bg-white px-5 py-5 text-sm">
-                      <span className="relative inline-block px-3 py-1 font-semibold leading-tight text-green-900">
-                        <span
-                          aria-hidden
-                          className="absolute inset-0 rounded-full bg-green-200 opacity-50"
-                        ></span>
-                        <span className="relative">Activo</span>
-                      </span>
+                      <StatusBadge status="Active" />
                     </td>
                   </tr>
                   <tr>
