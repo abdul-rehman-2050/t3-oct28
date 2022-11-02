@@ -226,7 +226,7 @@ export default function Sidebar2() {
                   </svg>
                 </div>
                 <input
-                  className="w-full rounded bg-gray-700 bg-gray-100 py-2 pl-10 text-sm text-gray-300 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-100"
+                  className="w-full rounded bg-gray-700  py-2 pl-10 text-sm text-gray-300 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-100"
                   type="text"
                   placeholder="Search"
                 />
@@ -368,7 +368,7 @@ export default function Sidebar2() {
           <button
             aria-label="Close sidebar"
             id="closeSideBar"
-            className="absolute right-0 mt-16 -mr-10 flex hidden h-10 w-10 cursor-pointer items-center justify-center rounded-tr rounded-br bg-gray-800 text-white shadow"
+            className="absolute right-0 mt-16 -mr-10  hidden h-10 w-10 cursor-pointer items-center justify-center rounded-tr rounded-br bg-gray-800 text-white shadow"
             onClick={()=>alert('false')}
           >
             <svg
@@ -606,7 +606,7 @@ export default function Sidebar2() {
                   </svg>
                 </div>
                 <input
-                  className="w-full rounded bg-gray-700 bg-gray-100  py-2 pl-10 text-sm text-gray-300 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-100"
+                  className="w-full rounded bg-gray-700   py-2 pl-10 text-sm text-gray-300 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-100"
                   type="text"
                   placeholder="Search"
                 />
