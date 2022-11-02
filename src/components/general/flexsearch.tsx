@@ -7,7 +7,7 @@ type Props = {
 export const FlexSearch = (props: Props) => {
   return (
     
-      <div className="flex items-center rounded-md bg-gray-50 p-2 w-full">
+      <div className="flex items-center rounded-md p-2 w-full border-emerald-400">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="h-5 w-5 text-gray-400"
@@ -21,7 +21,7 @@ export const FlexSearch = (props: Props) => {
           />
         </svg>
         <input
-          className="ml-1 block bg-gray-50 outline-none "
+          className="ml-1 w-full bg-gray-50 outline-1 border-gray-700 p-1"
           type="text"
           name=""
           id=""
