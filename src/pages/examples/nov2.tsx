@@ -3,6 +3,7 @@ import ChildInput from "../../components/examples/child-input";
 import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { FakeUsers } from "../../__mocks__/fakeusers";
+import { FlexSearch } from "../../components/general/flexsearch";
 
 const dummyObject={
     id: "2039x0923",
@@ -40,6 +41,9 @@ function Nov2() {
           </div>{" "}
           {/*--------------------------------------------*/}
           <div className="flex flex-wrap gap-2">
+            <div className="flex flex-row w-full">
+            <FlexSearch/>
+            </div>
             <div className="">
               <button type="submit" className="btn-primary block">
                 Submit
