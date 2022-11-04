@@ -17,7 +17,7 @@ export interface IFakeUser{
 
 function randomImagePath(){
     const menOrWomen = getRandomInt(0,2);
-    const imgNumb = getRandomInt(0,99);
+    const imgNumb = getRandomInt(0,90);
     let mOrW = 'men';
     if(menOrWomen == 1)mOrW = 'women';
     return `/images/${mOrW}/${imgNumb}.jpg`
