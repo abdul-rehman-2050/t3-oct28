@@ -4,7 +4,7 @@ import { IFakeUser } from "../../server/trpc/router/faker";
 import Image from "next/image";
 
 function UserInfoCard(props: IFakeUser) {
-  console.log(props.image);
+  
 
   return (
     <div className="right-0 mx-auto mt-2 w-60">
