@@ -20,3 +20,9 @@
     @apply flex flex-row w-full
   }
 }
+
+
+body{
+height: auto;
+min-height : 100vh;
+}
