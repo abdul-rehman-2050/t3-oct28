@@ -2,6 +2,7 @@ import Link from "next/link";
 import React from "react";
 import { IFakeUser } from "../../server/trpc/router/faker";
 import Image from "next/image";
+import {FaTrashAlt} from "react-icons/fa"
 
 const CloseButton = () => {
   return (
@@ -119,6 +120,7 @@ function UserInfoCard(props: IFakeUser) {
         </div>
 
         {/* ---------------------- */}
+        <div><button className="btn btn-error btn-block gap-2"><FaTrashAlt className="h-6 w-6"/> remove</button></div>
       </div>
     </div>
   );
