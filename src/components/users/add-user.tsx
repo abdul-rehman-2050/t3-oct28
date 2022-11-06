@@ -3,6 +3,7 @@ import React from "react";
 function AddUser() {
   return (
     <div data-theme="cupcake" className="p-6">
+        <p className="text-2xl font-bold">Add new User</p>
       <form action="">
         <div className="mt-4">
           <div className="flex justify-between">
@@ -60,6 +61,15 @@ function AddUser() {
               <span className="mx-1 text-xs text-red-400">Password must be same!</span>
             </div>
           </div>
+          <div className="mt-4">
+              <label className="block">Upload Picture</label>
+              <input
+                type="file"
+                placeholder="attach file"
+                className="form-control file-input-bordered mt-2 w-full rounded-md border px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-600"
+              />
+              <span className="mx-1 text-xs text-red-400">Password must be same!</span>
+            </div>
           
           <div className="flex">
             <button className="mt-4 w-full rounded-lg bg-blue-600 px-6 py-2 text-white hover:bg-blue-900">

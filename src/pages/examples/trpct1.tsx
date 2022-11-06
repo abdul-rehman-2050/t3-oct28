@@ -7,11 +7,6 @@ import AddUser from "../../components/users/add-user";
 
 
 
-function showModel(){
-  return (<AddUser></AddUser>);
-}
-
-
 function TrpcClientTest() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const hello = trpc.faker.getFakeUsers.useQuery(
@@ -41,7 +36,7 @@ function TrpcClientTest() {
   }
   return (
     <div className="flex h-auto flex-col ">
-      <Modal title="Create New User" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+      <Modal title="" open={isModalOpen}  onCancel={handleCancel}>
         <AddUser/>
       </Modal>
       
