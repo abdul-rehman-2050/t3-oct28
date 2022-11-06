@@ -1,85 +1,187 @@
-import React from "react";
 
-function AddUser() {
+import { SubmitHandler, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import {
+  UserValidationSchema,
+  UserValidationSchemaType,
+  CreateUserInterface,
+} from "../../validate/user";
+
+const AddUser = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<UserValidationSchemaType>({
+    resolver: zodResolver(UserValidationSchema),
+  });
+
+  const onSubmit: SubmitHandler<UserValidationSchemaType> = async (data) => {
+    console.log(data);
+    const user: CreateUserInterface = {
+      firstname: data.firstName,
+      lastname: data.lastName,
+      email: data.email,
+      phone: data.phone,
+      password: data.password,
+    };
+    console.log(user);
+    reset();
+  };
+
   return (
-    <div data-theme="cupcake" className="p-6">
-        <p className="text-2xl font-bold">Add new User</p>
-      <form action="">
-        <div className="mt-4">
-          <div className="flex justify-between">
-            <div className="">
-              <label className="block" htmlFor="Name">
-                First Name
-              </label>
-              <input
-                type="text"
-                placeholder="Name"
-                className="mt-2  rounded-md border px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-600"
-              />
-              <span className="mx-1 text-xs text-red-400">Password must be same!</span>
-            </div>
-            <div className="">
-              <label className="block" htmlFor="Name">
-                Last Name
-              </label>
-              <input
-                type="text"
-                placeholder="Name"
-                className="mt-2 rounded-md border px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-600"
-              />
-              <span className="mx-1 text-xs text-red-400">Password must be same!</span>
-            </div>
-          </div>
-          <div className="mt-4">
-            <label className="block" htmlFor="email">
-              Email
+    <div className="" data-theme="cupcake">
+      <form className=" px-8 pt-6 pb-8" onSubmit={handleSubmit(onSubmit)}>
+        <div className="mb-2 md:flex md:justify-between">
+          <div className="mb-2 md:mr-2 md:mb-0">
+            <label
+              className="mb-2 block text-sm font-bold text-gray-700"
+              htmlFor="firstName"
+            >
+              First Name
             </label>
             <input
+              className={`w-full border px-3 py-2 text-sm leading-tight text-gray-700 ${
+                errors.firstName && "border-red-500"
+              } focus:shadow-outline appearance-none rounded focus:outline-none`}
+              id="firstName"
               type="text"
-              placeholder="Email"
-              className="mt-2 w-full rounded-md border px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-600"
+              placeholder="First Name"
+              {...register("firstName")}
             />
-            <span className="mx-1 text-xs text-red-400">Password must be same!</span>
+            {errors.firstName && (
+              <p className="mt-2 text-xs italic text-red-500">
+                {errors.firstName?.message}
+              </p>
+            )}
           </div>
-          <div className="flex justify-between gap-2">
-            <div className="mt-4">
-              <label className="block">Password</label>
-              <input
-                type="password"
-                placeholder="Password"
-                className="mt-2 w-full rounded-md border px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-600"
-              />
-              <span className="mx-1 text-xs text-red-400">Password must be same!</span>
-            </div>
-            <div className="mt-4">
-              <label className="block">Confirm Password</label>
-              <input
-                type="password"
-                placeholder="Password"
-                className="mt-2 w-full rounded-md border px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-600"
-              />
-              <span className="mx-1 text-xs text-red-400">Password must be same!</span>
-            </div>
+          <div className="md:ml-2">
+            <label
+              className="mb-2 block text-sm font-bold text-gray-700"
+              htmlFor="lastName"
+            >
+              Last Name
+            </label>
+            <input
+              className={`w-full border px-3 py-2 text-sm leading-tight text-gray-700 ${
+                errors.lastName && "border-red-500"
+              } focus:shadow-outline appearance-none rounded focus:outline-none`}
+              id="lastName"
+              type="text"
+              placeholder="Last Name"
+              {...register("lastName")}
+            />
+            {errors.lastName && (
+              <p className="mt-2 text-xs italic text-red-500">
+                {errors.lastName?.message}
+              </p>
+            )}
           </div>
-          <div className="mt-4">
-              <label className="block">Upload Picture</label>
-              <input
-                type="file"
-                placeholder="attach file"
-                className="form-control file-input-bordered mt-2 w-full rounded-md border px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-600"
-              />
-              <span className="mx-1 text-xs text-red-400">Password must be same!</span>
-            </div>
-          
-          <div className="flex">
-            <button className="mt-4 w-full rounded-lg bg-blue-600 px-6 py-2 text-white hover:bg-blue-900">
-              Create Account
-            </button>
+        </div>
+        <div className="mb-4">
+          <label
+            className="mb-2 block text-sm font-bold text-gray-700"
+            htmlFor="email"
+          >
+            Email
+          </label>
+          <input
+            className={`w-full border px-3 py-2 text-sm leading-tight text-gray-700 ${
+              errors.email && "border-red-500"
+            } focus:shadow-outline appearance-none rounded focus:outline-none`}
+            id="email"
+            type="email"
+            placeholder="Email"
+            {...register("email")}
+          />
+          {errors.email && (
+            <p className="mt-2 text-xs italic text-red-500">
+              {errors.email?.message}
+            </p>
+          )}
+        </div>
+
+        <div className="mb-4">
+          <label
+            className="mb-2 block text-sm font-bold text-gray-700"
+            htmlFor="email"
+          >
+            Phone Number
+          </label>
+          <input
+            className={`w-full border px-3 py-2 text-sm leading-tight text-gray-700 ${
+              errors.email && "border-red-500"
+            } focus:shadow-outline appearance-none rounded focus:outline-none`}
+            id="phone"
+            type="phone"
+            placeholder="92xxxxxxx"
+            {...register("phone")}
+          />
+          {errors.phone && (
+            <p className="mt-2 text-xs italic text-red-500">
+              {errors.phone?.message}
+            </p>
+          )}
+        </div>
+
+        <div className="mb-4 md:flex md:justify-between">
+          <div className="mb-4 md:mr-2 md:mb-0">
+            <label
+              className="mb-2 block text-sm font-bold text-gray-700"
+              htmlFor="password"
+            >
+              Password
+            </label>
+            <input
+              className={`w-full border px-3 py-2 text-sm leading-tight text-gray-700 ${
+                errors.password && "border-red-500"
+              } focus:shadow-outline appearance-none rounded focus:outline-none`}
+              id="password"
+              type="password"
+              {...register("password")}
+            />
+            {errors.password && (
+              <p className="mt-2 text-xs italic text-red-500">
+                {errors.password?.message}
+              </p>
+            )}
           </div>
+          <div className="md:ml-2">
+            <label
+              className="mb-2 block text-sm font-bold text-gray-700"
+              htmlFor="c_password"
+            >
+              Confirm Password
+            </label>
+            <input
+              className={`w-full border px-3 py-2 text-sm leading-tight text-gray-700 ${
+                errors.confirmPassword && "border-red-500"
+              } focus:shadow-outline appearance-none rounded focus:outline-none`}
+              id="c_password"
+              type="password"
+              {...register("confirmPassword")}
+            />
+            {errors.confirmPassword && (
+              <p className="mt-2 text-xs italic text-red-500">
+                {errors.confirmPassword?.message}
+              </p>
+            )}
+          </div>
+        </div>
+        <div className="mb-6 text-center">
+          <button
+            className="focus:shadow-outline w-full rounded-full bg-purple-500 px-4 py-2 font-bold text-white hover:bg-purple-700 focus:outline-none"
+            type="submit"
+          >
+            Add New User
+          </button>
+          {/*mutation.error && <p>Something went wrong! {mutation.error.message}</p>*/}
         </div>
       </form>
     </div>
   );
-}
+};
 
 export default AddUser;

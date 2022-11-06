@@ -10,6 +10,8 @@
     "start": "next start"
   },
   "dependencies": {
+    "@hookform/error-message": "^2.0.0",
+    "@hookform/resolvers": "^2.9.10",
     "@next-auth/prisma-adapter": "^1.0.4",
     "@prisma/client": "^4.5.0",
     "@tailwindcss/line-clamp": "^0.4.2",

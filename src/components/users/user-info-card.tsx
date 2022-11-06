@@ -4,7 +4,9 @@ import { IFakeUser } from "../../server/trpc/router/faker";
 import Image from "next/image";
 import {FaTrashAlt} from "react-icons/fa"
 
+
 const CloseButton = () => {
+  
   return (
     <button className="btn-circle btn">
       <svg

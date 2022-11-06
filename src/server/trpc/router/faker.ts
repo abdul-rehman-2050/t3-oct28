@@ -2,8 +2,6 @@ import { router, publicProcedure } from "../trpc";
 import { z } from "zod";
 import {getRandomInt} from "../../../utils/randomizer"
 import { faker } from "@faker-js/faker";
-import React from "react";
-
 
 export interface IFakeUser{
     id: string;
@@ -12,9 +10,6 @@ export interface IFakeUser{
     email: string;
     phone?: string;
     image?: string;
-    
-    
-    
 }
 
 function randomImagePath(){
