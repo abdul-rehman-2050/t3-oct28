@@ -1,7 +1,10 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
+import axios from "axios";
 import { ChangeEvent, MouseEvent, useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const Test4: NextPage = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -55,34 +58,30 @@ const Test4: NextPage = () => {
 
     try {
       const formData = new FormData();
-      formData.append("media", file);
+      formData.append("myImage", file);
+      formData.append("gender","women")
 
-      const res = await fetch("/api/upload", {
+      const res = await fetch("/api/image", {
         method: "POST",
         body: formData,
       });
 
-      const {
-        data,
-        error,
-      }: {
-        data: {
-          url: string | string[] ;
-        } | null;
-        error: string | null;
-      } = await res.json();
+      toast.success("done"+JSON.stringify(res), {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
 
-      if (error || !data) {
-        console.log(error)
-        alert(error || "Sorry! something went wrong.");
-        return;
-      }
-
-      console.log("File was uploaded successfylly:", data);
     } catch (error) {
-      console.error(error);
-      alert("Sorry! something went wrong.");
+      toast.error("Something went wrong"+JSON.stringify(error));
     }
+    setFile(null);
+    setPreviewUrl(null);
   };
 
   return (
@@ -93,16 +92,17 @@ const Test4: NextPage = () => {
       </Head>
 
       <main className="py-10">
-        <div className="w-full max-w-3xl px-3 mx-auto">
+       
+        <div className="mx-auto w-full max-w-3xl px-3">
           <h1 className="mb-10 text-3xl font-bold text-gray-900">
             Upload your files
           </h1>
 
           <form
-            className="w-full p-3 border border-gray-500 border-dashed"
+            className="w-full border border-dashed border-gray-500 p-3"
             onSubmit={(e) => e.preventDefault()}
           >
-            <div className="flex flex-col md:flex-row gap-1.5 md:py-4">
+            <div className="flex flex-col gap-1.5 md:flex-row md:py-4">
               <div className="flex-grow">
                 {previewUrl ? (
                   <div className="mx-auto w-80">
@@ -116,10 +116,10 @@ const Test4: NextPage = () => {
                     />
                   </div>
                 ) : (
-                  <label className="flex flex-col items-center justify-center h-full py-3 transition-colors duration-150 cursor-pointer hover:text-gray-600">
+                  <label className="flex h-full cursor-pointer flex-col items-center justify-center py-3 transition-colors duration-150 hover:text-gray-600">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      className="w-14 h-14"
+                      className="h-14 w-14"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -135,7 +135,7 @@ const Test4: NextPage = () => {
                       Select an image
                     </strong>
                     <input
-                      className="block w-0 h-0"
+                      className="block h-0 w-0"
                       name="file"
                       type="file"
                       onChange={onFileUploadChange}
@@ -143,18 +143,18 @@ const Test4: NextPage = () => {
                   </label>
                 )}
               </div>
-              <div className="flex mt-4 md:mt-0 md:flex-col justify-center gap-1.5">
+              <div className="mt-4 flex justify-center gap-1.5 md:mt-0 md:flex-col">
                 <button
                   disabled={!previewUrl}
                   onClick={onCancelFile}
-                  className="w-1/2 px-4 py-3 text-sm font-medium text-white transition-colors duration-300 bg-gray-700 rounded-sm md:w-auto md:text-base disabled:bg-gray-400 hover:bg-gray-600"
+                  className="w-1/2 rounded-sm bg-gray-700 px-4 py-3 text-sm font-medium text-white transition-colors duration-300 hover:bg-gray-600 disabled:bg-gray-400 md:w-auto md:text-base"
                 >
                   Cancel file
                 </button>
                 <button
                   disabled={!previewUrl}
                   onClick={onUploadFile}
-                  className="w-1/2 px-4 py-3 text-sm font-medium text-white transition-colors duration-300 bg-gray-700 rounded-sm md:w-auto md:text-base disabled:bg-gray-400 hover:bg-gray-600"
+                  className="w-1/2 rounded-sm bg-gray-700 px-4 py-3 text-sm font-medium text-white transition-colors duration-300 hover:bg-gray-600 disabled:bg-gray-400 md:w-auto md:text-base"
                 >
                   Upload file
                 </button>
@@ -165,8 +165,11 @@ const Test4: NextPage = () => {
       </main>
 
       <footer>
-        <div className="w-full max-w-3xl px-3 mx-auto">
+        <div className="mx-auto w-full max-w-3xl px-3">
           <p>All right reserved</p>
+          <ToastContainer
+         
+        />
         </div>
       </footer>
     </div>
