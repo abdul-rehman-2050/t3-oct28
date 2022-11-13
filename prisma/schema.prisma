@@ -64,3 +64,29 @@ model VerificationToken {
 
   @@unique([identifier, token])
 }
+
+model TopUser {
+  id      Int      @id @default(autoincrement())
+  profile Profile?
+}
+
+model Credential {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique
+  email     String   @unique
+  profile   Profile?
+  createdAt DateTime @default(now())
+}
+
+model Profile {
+  id          Int    @id @default(autoincrement())
+  firstName   String
+  lastName    String
+  phoneNumber String
+  imageURL    String
+
+  user         TopUser    @relation(fields: [userId], references: [id])
+  credentail   Credential @relation(fields: [credentailId], references: [id])
+  userId       Int        @unique // relation scalar field (used in the `@relation` attribute above)
+  credentailId Int        @unique
+}
