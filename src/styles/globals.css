@@ -26,3 +26,6 @@ body{
 height: auto;
 min-height : 100vh;
 }
+
+@import '~antd/dist/antd.dark.css';
+@import '~antd/dist/antd.compact.css';
