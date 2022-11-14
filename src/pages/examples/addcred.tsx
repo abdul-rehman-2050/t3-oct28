@@ -5,6 +5,7 @@ import { Table, Space, Button } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { ICredential } from "../../types/global";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { trpc } from "../../utils/trpc";
 
 const mocCred = [
   {
@@ -58,17 +59,27 @@ const columns: ColumnsType<ICredential> = [
 ];
 
 function AddCred() {
+    const fakeMutation = trpc.credential.createFake.useMutation();
+
   const [Data, setData] = useState(mocCred);
+
+  const handleFakeAdd = async () => {
+    
+    const result = await fakeMutation.mutate({ count:1});
+
+
+  };
   return (
     <PanelLayout>
       <div>
-        <Button
-          onClick={() => alert("")}
-          type="primary"
+        <button          
+          className="btn btn-primary"
           style={{ marginBottom: 16 }}
+          onClick={handleFakeAdd} 
+          disabled={fakeMutation.isLoading}
         >
           Add New User
-        </Button>
+        </button>
         <Table dataSource={Data} columns={columns} /> 
       </div>
       
