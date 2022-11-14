@@ -12,6 +12,7 @@ export const zodCredential = z.object({
     .string()
     .min(6, { message: "Password must be atleast 6 character long" })
     .optional(),
+  role: z.string().optional(),
   createdAt: z.date().nullable().optional(),
 });
 
@@ -28,37 +29,23 @@ export const CredentialRouter = router({
   getAll: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.credential.findMany();
   }),
-  createFake: publicProcedure
-    .input(z.object({ count: z.number() }))
-    .mutation(async ({ ctx, input }) => {
-      
-      const hashedPassword = await hash("password");
-      for (let i = 0; i < input.count; i++) {
-        try {
-          const credentials = {
-            username: faker.internet.userName(),
-            email: faker.internet.email(),
-            password: hashedPassword,
-          };
+  createFake: publicProcedure.mutation(async ({ ctx }) => {
+    const hashedPassword = await hash("password");
+    const credentials = {
+      username: faker.internet.userName(),
+      email: faker.internet.email(),
+      password: hashedPassword,
+      role: "Admin".toUpperCase(),
+    };
 
-          const result = await ctx.prisma.credential.create({
-            data: credentials,
-          });
-          //results.push(result);
-        } catch (error) {
-          throw new TRPCError({
-            code: "CONFLICT",
-            message: "some error occured" + JSON.stringify(error),
-          });
-        }
+    await ctx.prisma.credential.create({ data: credentials });
 
-        return {
-          status: 201,
-          message: "Account created successfully",
-          result: "done",
-        };
-      }
-    }),
+    return {
+      status: 201,
+      message: "Account created successfully",
+      result: credentials,
+    };
+  }),
   createNew: publicProcedure
     .input(
       z

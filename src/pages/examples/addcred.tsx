@@ -65,7 +65,8 @@ function AddCred() {
 
   const handleFakeAdd = async () => {
     
-    const result = await fakeMutation.mutate({ count:1});
+    const result = await fakeMutation.mutate();
+    setData([...Data, result.data])
 
 
   };

@@ -75,6 +75,8 @@ model Credential {
   username  String   @unique
   email     String   @unique
   profile   Profile?
+  password  String 
+  role      String   @default("USER")
   createdAt DateTime @default(now())
 }
 
