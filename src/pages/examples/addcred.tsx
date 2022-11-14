@@ -8,6 +8,7 @@ import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import { trpc } from "../../utils/trpc";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Modal } from "antd";
 
 function AddCred() {
   const removeMutation = trpc.credential.removeById.useMutation();
@@ -42,20 +43,43 @@ function AddCred() {
   // console.log(getAllCredentials.data)
 
   const [Data, setData] = useState(getAllCredentials.data);
-  const handleRemove = async (id: number) => {
-    const result = await removeMutation.mutate({ id: id });
+  const [editableCredential ,setEditableCredential] = useState<ICredential | null > (null);
 
+  //---------------------------------------------------------------
+  const handleRemove = (id: number) => {
+    removeMutation.mutate({ id: id });
     const newData = Data?.filter((data) => data.id !== id);
     setData(newData);
-    toast.success(`removed user of id = ${id}`,{
+    toast.success(`removed user of id = ${id}`, {
       position: "top-right",
-        autoClose: 1500,
-        theme: "light",
-        pauseOnHover: false,
-      
-    })
+      autoClose: 1500,
+      theme: "light",
+      pauseOnHover: false,
+    });
   };
 
+  const handleUpdate = (record: ICredential) => {
+    console.log(record);
+    setEditableCredential(record)
+    showModal()
+  };
+  //------------------------------------------------------------
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
+  //============================================================
   const columns: ColumnsType<ICredential> = [
     {
       title: "Id",
@@ -88,15 +112,16 @@ function AddCred() {
             onClick={() => handleRemove(record.id)}
             size="middle"
           />
-          <Button type="default" icon={<EditOutlined />} size="middle" />
+          <Button
+            type="default"
+            icon={<EditOutlined />}
+            size="middle"
+            onClick={() => handleUpdate(record)}
+          />
         </Space>
       ),
     },
   ];
-
-  const handleFakeAdd = async () => {
-    const result = fakeMutation.mutate();
-  };
 
   return (
     <PanelLayout>
@@ -104,7 +129,9 @@ function AddCred() {
         <button
           className="btn-primary btn"
           style={{ marginBottom: 16 }}
-          onClick={handleFakeAdd}
+          onClick={() => {
+            fakeMutation.mutate();
+          }}
           disabled={fakeMutation.isLoading}
         >
           Add New User
@@ -122,6 +149,17 @@ function AddCred() {
           <ToastContainer />
         </div>
       </footer>
+      <Modal
+        title="Manage Credentials"
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        footer={null}
+      >
+        <p>{JSON.stringify(editableCredential)}</p>
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+      </Modal>
     </PanelLayout>
   );
 }
