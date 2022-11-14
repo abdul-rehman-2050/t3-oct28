@@ -29,20 +29,36 @@ export const CredentialRouter = router({
   getAll: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.credential.findMany();
   }),
+  removeById: publicProcedure
+  .input(z.object({id:z.number()}))
+  .mutation(async ({ ctx, input }) => {
+    const record = await ctx.prisma.credential.delete({
+      where: {
+        id: input.id
+      }
+    })
+    return {
+      status: "success",
+      data: {
+        record,
+      },
+    };
+    
+  }),
   createFake: publicProcedure.mutation(async ({ ctx }) => {
     const hashedPassword = await hash("password");
     const credentials = {
       username: faker.internet.userName(),
       email: faker.internet.email(),
       password: hashedPassword,
-      role: "Admin".toUpperCase(),
+      role: "User".toUpperCase(),
     };
 
     const record = await ctx.prisma.credential.create({ data: credentials });
-    console.log(record)
+    console.log(record);
 
     return {
-      status: 'success',
+      status: "success",
       data: {
         record,
       },
@@ -55,11 +71,12 @@ export const CredentialRouter = router({
           username: z.string(),
           email: z.string(),
           password: z.string(),
+          role: z.string().optional(),
         })
         .required()
     )
     .mutation(async ({ ctx, input }) => {
-      const { username, email, password } = input;
+      const { username, email, password, role } = input;
       const exists = await ctx.prisma.credential.findFirst({
         where: { email },
       });
@@ -70,10 +87,12 @@ export const CredentialRouter = router({
         });
       }
       const hashedPassword = await hash(password);
+
       const credentials = {
         username: username,
         email: email,
         password: hashedPassword,
+        role: role.toUpperCase(),
       };
 
       const result = await ctx.prisma.credential.create({ data: credentials });
