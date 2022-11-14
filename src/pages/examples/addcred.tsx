@@ -6,16 +6,24 @@ import type { ColumnsType } from "antd/es/table";
 import { ICredential } from "../../types/global";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import { trpc } from "../../utils/trpc";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function AddCred() {
+  const removeMutation = trpc.credential.removeById.useMutation();
   const fakeMutation = trpc.credential.createFake.useMutation({
-    onSuccess(data, variables, context) {
+    onSuccess(data) {
       console.log(data.data.record);
       if (Data) {
         setData([...Data, data.data.record]);
       } else {
         setData([data.data.record]);
       }
+      toast.success("New User created successfully", {
+        position: "top-right",
+        autoClose: 1500,
+        theme: "light",
+      });
     },
   });
 
@@ -34,9 +42,18 @@ function AddCred() {
   // console.log(getAllCredentials.data)
 
   const [Data, setData] = useState(getAllCredentials.data);
-  const handleRemove = (id: number) => {
+  const handleRemove = async (id: number) => {
+    const result = await removeMutation.mutate({ id: id });
+
     const newData = Data?.filter((data) => data.id !== id);
     setData(newData);
+    toast.success(`removed user of id = ${id}`,{
+      position: "top-right",
+        autoClose: 1500,
+        theme: "light",
+        pauseOnHover: false,
+      
+    })
   };
 
   const columns: ColumnsType<ICredential> = [
@@ -99,6 +116,12 @@ function AddCred() {
         />
          
       </div>
+      <footer>
+        <div className="mx-auto w-full max-w-3xl px-3">
+          <p>All right reserved</p>
+          <ToastContainer />
+        </div>
+      </footer>
     </PanelLayout>
   );
 }
