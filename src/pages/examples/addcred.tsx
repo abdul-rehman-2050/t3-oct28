@@ -9,6 +9,7 @@ import { trpc } from "../../utils/trpc";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Modal } from "antd";
+import UpdateCredential from "../../components/credentials/update";
 
 function AddCred() {
   const removeMutation = trpc.credential.removeById.useMutation();
@@ -156,9 +157,10 @@ function AddCred() {
         onCancel={handleCancel}
         footer={null}
       >
-        <p>{JSON.stringify(editableCredential)}</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
+        <div>
+          <UpdateCredential credential={editableCredential}/>
+        </div>
+        
       </Modal>
     </PanelLayout>
   );
