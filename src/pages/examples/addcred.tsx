@@ -42,6 +42,11 @@ const columns: ColumnsType<ICredential> = [
     key: "username",
   },
   {
+    title: "Role",
+    dataIndex: "role",
+    key: "role",
+  },
+  {
     title: "Email",
     dataIndex: "email",
     key: "email",
@@ -59,14 +64,20 @@ const columns: ColumnsType<ICredential> = [
 ];
 
 function AddCred() {
-    const fakeMutation = trpc.credential.createFake.useMutation();
+    const fakeMutation = trpc.credential.createFake.useMutation({
+      onSuccess(data, variables, context) {
+        console.log(data.data.record)
+        setData([...Data, data.data.record])
+      },
+    });
 
   const [Data, setData] = useState(mocCred);
 
   const handleFakeAdd = async () => {
     
-    const result = await fakeMutation.mutate();
-    setData([...Data, result.data])
+    const result = fakeMutation.mutate();
+    
+    
 
 
   };
@@ -81,7 +92,7 @@ function AddCred() {
         >
           Add New User
         </button>
-        <Table dataSource={Data} columns={columns} /> 
+        <Table dataSource={Data} columns={columns} pagination={{ pageSize: 15 }} /> 
       </div>
       
     </PanelLayout>

@@ -38,12 +38,14 @@ export const CredentialRouter = router({
       role: "Admin".toUpperCase(),
     };
 
-    await ctx.prisma.credential.create({ data: credentials });
+    const record = await ctx.prisma.credential.create({ data: credentials });
+    console.log(record)
 
     return {
-      status: 201,
-      message: "Account created successfully",
-      result: credentials,
+      status: 'success',
+      data: {
+        record,
+      },
     };
   }),
   createNew: publicProcedure
