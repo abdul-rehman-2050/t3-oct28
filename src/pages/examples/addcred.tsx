@@ -9,59 +9,28 @@ import { trpc } from "../../utils/trpc";
 
 const mocCred = [
   {
-    id: "2",
+    id: 2,
     username: "Lora47",
     email: "Watson.Morissette@hotmail.com",
   },
   {
-    id: "1",
+    id: 1,
     username: "Dedrick.OConnell59",
     email: "	Celestine90@yahoo.com",
   },
   {
-    id: "3",
+    id: 3,
     username: "Rashad.Mueller15",
     email: "Kyla_Runolfsson@hotmail.com",
   },
   {
-    id: "4",
+    id: 4,
     username: "OConnell59",
     email: "Chaim_Sanford28@gmail.com",
   },
 ];
 
-const columns: ColumnsType<ICredential> = [
-  {
-    title: "Id",
-    dataIndex: "id",
-    key: "id",
-  },
-  {
-    title: "User Name",
-    dataIndex: "username",
-    key: "username",
-  },
-  {
-    title: "Role",
-    dataIndex: "role",
-    key: "role",
-  },
-  {
-    title: "Email",
-    dataIndex: "email",
-    key: "email",
-  },
-  {
-    title: "Action",
-    key: "action",
-    render: (_, record) => (
-      <Space size="middle">
-        <Button type="default" icon={<DeleteOutlined />} size="middle" />
-        <Button type="default" icon={<EditOutlined />} size="middle" />
-      </Space>
-    ),
-  },
-];
+
 
 function AddCred() {
     const fakeMutation = trpc.credential.createFake.useMutation({
@@ -72,6 +41,44 @@ function AddCred() {
     });
 
   const [Data, setData] = useState(mocCred);
+  const handleRemove = (id:number) => {
+    const newData = Data.filter((data) => data.id !== id); 
+    setData( newData);
+  };
+
+  const columns: ColumnsType<ICredential> = [
+    {
+      title: "Id",
+      dataIndex: "id",
+      key: "id",
+    },
+    {
+      title: "User Name",
+      dataIndex: "username",
+      key: "username",
+    },
+    {
+      title: "Role",
+      dataIndex: "role",
+      key: "role",
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
+    },
+    {
+      title: "Action",
+      key: "action",
+      render: (_, record) => (
+        <Space size="middle">
+          <Button type="default" icon={<DeleteOutlined />} onClick={()=>handleRemove(record.id)} size="middle" />
+          <Button type="default" icon={<EditOutlined />} size="middle" />
+        </Space>
+      ),
+    },
+  ];
+ 
 
   const handleFakeAdd = async () => {
     
