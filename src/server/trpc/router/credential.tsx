@@ -3,6 +3,7 @@ import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 import { hash } from "argon2";
 import { faker } from "@faker-js/faker";
+import { ICredential } from "../../../types/global";
 
 export const zodCredential = z.object({
   id: z.number().optional(),
@@ -30,21 +31,53 @@ export const CredentialRouter = router({
     return ctx.prisma.credential.findMany();
   }),
   removeById: publicProcedure
-  .input(z.object({id:z.number()}))
-  .mutation(async ({ ctx, input }) => {
-    const record = await ctx.prisma.credential.delete({
-      where: {
-        id: input.id
-      }
-    })
-    return {
-      status: "success",
-      data: {
-        record,
-      },
-    };
-    
-  }),
+    .input(z.object({ id: z.number() }))
+    .mutation(async ({ ctx, input }) => {
+      const record = await ctx.prisma.credential.delete({
+        where: {
+          id: input.id,
+        },
+      });
+      return {
+        status: "success",
+        data: {
+          record,
+        },
+      };
+    }),
+  updateById: publicProcedure
+    .input(
+      z.object({
+        id: z.number(),
+        username: z.string(),
+        email: z.string().email(),
+        password: z.string(),
+        role: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const hashedPassword = await hash(input.password);
+
+      const updatedCred = await ctx.prisma.credential.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          id: input.id,
+          username: input.username,
+          email: input.email,
+          password: hashedPassword,
+          role: input.role,
+        },
+      });
+
+      return {
+        status: "success",
+        data: {
+          updatedCred,
+        },
+      };
+    }),
   createFake: publicProcedure.mutation(async ({ ctx }) => {
     const hashedPassword = await hash("password");
     const credentials = {

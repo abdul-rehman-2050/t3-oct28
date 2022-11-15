@@ -13,6 +13,7 @@ import UpdateCredential from "../../components/credentials/update";
 
 function AddCred() {
   const removeMutation = trpc.credential.removeById.useMutation();
+  const updateCredential = trpc.credential.updateById.useMutation();
   const fakeMutation = trpc.credential.createFake.useMutation({
     onSuccess(data) {
       console.log(data.data.record);
@@ -55,8 +56,22 @@ function AddCred() {
       const newVal = [...Data];
       newVal[index] = record;
       setData(newVal);
+      const updateCred = {
+        id: record.id as number,
+        username: record.username as string,
+        password: record.password as string,
+        role: record.role as string,
+        email: record.email as string,
+      }
+      updateCredential.mutate(updateCred)
       console.log(Data[index]);
       setIsModalOpen(false);
+      toast.info("New valued requested to be updated", {
+        position: "top-right",
+        autoClose: 2500,
+        theme: "light",
+      });
+
     } else {
       console.log("No Data found");
     }
