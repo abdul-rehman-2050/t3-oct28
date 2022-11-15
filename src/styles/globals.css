@@ -1,11 +1,11 @@
-@import '~antd/dist/antd.css';
+@import "~antd/dist/antd.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer components {
   .btn-primary {
-    @apply  rounded-lg bg-blue-500 py-2 px-4 font-semibold text-white shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75;
+    @apply rounded-lg bg-blue-500 py-2 px-4 font-semibold text-white shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75;
   }
   .btn-default {
     @apply mr-2 mb-2 rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800;
@@ -16,16 +16,27 @@
   .btn-green {
     @apply mr-2 mb-2 rounded-lg bg-green-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800;
   }
-  .flex-full-row{
-    @apply flex flex-row w-full
+  .flex-full-row {
+    @apply flex w-full flex-row;
+  }
+  .mform{
+    @apply space-y-4 md:space-y-6
+  }
+  .mform-label {
+    @apply mb-2 block text-sm font-medium text-gray-900 dark:text-white;
+  }
+  .mform-input {
+    @apply  block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 sm:text-sm;
+  }
+  .mtext-h1 {
+    @apply text-xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white md:text-2xl
   }
 }
 
-
-body{
-height: auto;
-min-height : 100vh;
+body {
+  height: auto;
+  min-height: 100vh;
 }
 
-@import '~antd/dist/antd.dark.css';
-@import '~antd/dist/antd.compact.css';
+@import "~antd/dist/antd.dark.css";
+@import "~antd/dist/antd.compact.css";

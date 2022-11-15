@@ -43,8 +43,24 @@ function AddCred() {
   }
   // console.log(getAllCredentials.data)
 
-  const [Data, setData] = useState(getAllCredentials.data);
-  const [editableCredential ,setEditableCredential] = useState<ICredential | null > (null);
+  const [Data, setData] = useState(getAllCredentials.data as ICredential[]);
+  const [editableCredential, setEditableCredential] =
+    useState<ICredential | null>(null);
+
+  //---------------------------------------------------------------
+  const updatedValue = (record: ICredential) => {
+    if (Data) {
+      const index = Data?.findIndex((data) => data.id === record.id);
+      console.log("value = " + index);
+      const newVal = [...Data];
+      newVal[index] = record;
+      setData(newVal);
+      console.log(Data[index]);
+      setIsModalOpen(false);
+    } else {
+      console.log("No Data found");
+    }
+  };
 
   //---------------------------------------------------------------
   const handleRemove = (id: number) => {
@@ -61,8 +77,8 @@ function AddCred() {
 
   const handleUpdate = (record: ICredential) => {
     console.log(record);
-    setEditableCredential(record)
-    showModal()
+    setEditableCredential(record);
+    showModal();
   };
   //------------------------------------------------------------
 
@@ -158,9 +174,11 @@ function AddCred() {
         footer={null}
       >
         <div>
-          <UpdateCredential credential={editableCredential}/>
+          <UpdateCredential
+            credential={editableCredential}
+            submitFunction={updatedValue}
+          />
         </div>
-        
       </Modal>
     </PanelLayout>
   );
