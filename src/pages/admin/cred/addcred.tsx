@@ -9,7 +9,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Modal } from "antd";
 import UpdateCredential from "../../../components/credentials/update";
-import FlexSimpleLayout from "../../../layouts/flex-simple-layout";
+
+import ChakraLayout from "../../../layouts/chakra-layout";
 
 function AddCred() {
   const removeMutation = trpc.credential.removeById.useMutation();
@@ -153,7 +154,7 @@ function AddCred() {
   ];
 
   return (
-    <FlexSimpleLayout>
+    <ChakraLayout>
       <div className="flex flex-col overflow-auto p-2">
         <div>
           <button
@@ -194,7 +195,7 @@ function AddCred() {
           </div>
         </Modal>
       </div>
-    </FlexSimpleLayout>
+      </ChakraLayout>
   );
 }
 
