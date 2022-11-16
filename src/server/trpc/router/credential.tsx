@@ -4,7 +4,6 @@ import { TRPCError } from "@trpc/server";
 import { hash } from "argon2";
 import { faker } from "@faker-js/faker";
 
-
 export const zodCredential = z.object({
   id: z.number().optional(),
   username: z.string().nullable().optional(),
@@ -80,11 +79,16 @@ export const CredentialRouter = router({
     }),
   createFake: publicProcedure.mutation(async ({ ctx }) => {
     const hashedPassword = await hash("password");
+    let randomrole = "USER";
+    const x = Math.floor(Math.random() * 2) == 0;
+    if (x) {
+      randomrole = "ADMIN";
+    }
     const credentials = {
       username: faker.internet.userName(),
       email: faker.internet.email(),
       password: hashedPassword,
-      role: "User".toUpperCase(),
+      role: randomrole.toUpperCase(),
     };
 
     const record = await ctx.prisma.credential.create({ data: credentials });

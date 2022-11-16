@@ -3,15 +3,7 @@ import React, { useState } from "react";
 import ChakraLayout from "../../../layouts/chakra-layout";
 import { ICredential } from "../../../types/global";
 import { trpc } from "../../../utils/trpc";
-import {
-  Button,
-  Flex,
-  Badge,
-  
-  Box,
-  Text,
-  
-} from "@chakra-ui/react";
+import { Button, Flex, Badge, Box, Text } from "@chakra-ui/react";
 import { FaUserAlt, FaUserEdit, FaTrash, FaEdit } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -40,8 +32,8 @@ const Index = () => {
     },
   });
 
-   //---------------------------------------------------------------
-   const handleRemove = (id: number) => {
+  //---------------------------------------------------------------
+  const handleRemove = (id: number) => {
     removeMutation.mutate({ id: id });
     const newData = Data?.filter((data) => data.id !== id);
     setData(newData);
@@ -52,7 +44,6 @@ const Index = () => {
       pauseOnHover: false,
     });
   };
-
 
   const [Data, setData] = useState(getAllCredentials.data as ICredential[]);
 
