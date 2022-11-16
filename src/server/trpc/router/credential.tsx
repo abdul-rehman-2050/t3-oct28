@@ -3,7 +3,7 @@ import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 import { hash } from "argon2";
 import { faker } from "@faker-js/faker";
-import { ICredential } from "../../../types/global";
+
 
 export const zodCredential = z.object({
   id: z.number().optional(),

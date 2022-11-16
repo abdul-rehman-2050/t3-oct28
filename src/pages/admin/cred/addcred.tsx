@@ -1,15 +1,15 @@
 import React, { useState } from "react";
-import PanelLayout from "../../layouts/panel";
 
 import { Table, Space, Button } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import { ICredential } from "../../types/global";
+import { ICredential } from "../../../types/global";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
-import { trpc } from "../../utils/trpc";
+import { trpc } from "../../../utils/trpc";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Modal } from "antd";
-import UpdateCredential from "../../components/credentials/update";
+import UpdateCredential from "../../../components/credentials/update";
+import FlexSimpleLayout from "../../../layouts/flex-simple-layout";
 
 function AddCred() {
   const removeMutation = trpc.credential.removeById.useMutation();
@@ -36,11 +36,9 @@ function AddCred() {
     },
   });
   if (!getAllCredentials) {
-    <PanelLayout>
-      <div>
-        <p>Loading...</p>
-      </div>
-    </PanelLayout>;
+    <div>
+      <p>Loading...</p>
+    </div>;
   }
   // console.log(getAllCredentials.data)
 
@@ -62,8 +60,8 @@ function AddCred() {
         password: record.password as string,
         role: record.role as string,
         email: record.email as string,
-      }
-      updateCredential.mutate(updateCred)
+      };
+      updateCredential.mutate(updateCred);
       console.log(Data[index]);
       setIsModalOpen(false);
       toast.info("New valued requested to be updated", {
@@ -71,7 +69,6 @@ function AddCred() {
         autoClose: 2500,
         theme: "light",
       });
-
     } else {
       console.log("No Data found");
     }
@@ -156,46 +153,48 @@ function AddCred() {
   ];
 
   return (
-    <PanelLayout>
-      <div>
-        <button
-          className="btn-primary btn"
-          style={{ marginBottom: 16 }}
-          onClick={() => {
-            fakeMutation.mutate();
-          }}
-          disabled={fakeMutation.isLoading}
-        >
-          Add New User
-        </button>
-        <Table
-          dataSource={Data}
-          columns={columns}
-          pagination={{ pageSize: 15 }}
-        />
-         
-      </div>
-      <footer>
-        <div className="mx-auto w-full max-w-3xl px-3">
-          <p>All right reserved</p>
-          <ToastContainer />
-        </div>
-      </footer>
-      <Modal
-        title="Manage Credentials"
-        open={isModalOpen}
-        onOk={handleOk}
-        onCancel={handleCancel}
-        footer={null}
-      >
+    <FlexSimpleLayout>
+      <div className="flex flex-col overflow-auto p-2">
         <div>
-          <UpdateCredential
-            credential={editableCredential}
-            submitFunction={updatedValue}
+          <button
+            className="btn-primary btn"
+            style={{ marginBottom: 16 }}
+            onClick={() => {
+              fakeMutation.mutate();
+            }}
+            disabled={fakeMutation.isLoading}
+          >
+            Add New User
+          </button>
+          <Table
+            dataSource={Data}
+            columns={columns}
+            pagination={{ pageSize: 15 }}
           />
+           
         </div>
-      </Modal>
-    </PanelLayout>
+        <footer>
+          <div className="mx-auto w-full max-w-3xl px-3">
+            <p>All right reserved</p>
+            <ToastContainer />
+          </div>
+        </footer>
+        <Modal
+          title="Manage Credentials"
+          open={isModalOpen}
+          onOk={handleOk}
+          onCancel={handleCancel}
+          footer={null}
+        >
+          <div>
+            <UpdateCredential
+              credential={editableCredential}
+              submitFunction={updatedValue}
+            />
+          </div>
+        </Modal>
+      </div>
+    </FlexSimpleLayout>
   );
 }
 
