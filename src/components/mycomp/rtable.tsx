@@ -7,7 +7,7 @@ export type ColumnDefinitionType = {
   key: string;
   header: string;
   width?: number;
-  render?: React.ReactNode;
+  render?: (record:any)=>React.ReactNode;
 };
 
 export type TableProps<T> = {

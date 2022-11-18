@@ -3,8 +3,8 @@ import { ColumnDefinitionType } from "./rtable";
 type TableRowsProps<T> = {
   data: Array<T>;
   columns: Array<ColumnDefinitionType>;
-  trClassNames? : string;
-  tdClassNames? : string;
+  trClassNames?: string;
+  tdClassNames?: string;
 };
 
 const style = {
@@ -22,11 +22,13 @@ const TableRows = <T, K extends keyof T>({
       <tr key={`row-${index}`} className={trClassNames}>
         {columns.map((column, index2) => {
           if (column.render) {
-            return column.render;
+            return column.render(row);
           } else {
             return (
-              
-              <td key={`cell-${index2}`} className={`${tdClassNames} justify-center`}>
+              <td
+                key={`cell-${index2}`}
+                className={`${tdClassNames} justify-center`}
+              >
                 {(row as any)[column.key]}
               </td>
             );

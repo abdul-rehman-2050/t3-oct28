@@ -73,18 +73,21 @@ const Index = () => {
     {
       key: "Actions",
       header: "Actions",
-      render: (
-        <td className="whitespace-nowrap p-2">
-          <div className="text-left text-lg">
-            <button className="mr-2 inline-flex items-center rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-              <FaEdit className="h-5 w-5" />
-            </button>
-            <button className="mr-2 inline-flex items-center rounded-lg bg-red-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
-              <FaTrash className="h-5 w-5" />
-            </button>
-          </div>
-        </td>
-      ),
+      render: (_record) => {
+        return (
+          <td className="whitespace-nowrap p-2">
+            {_record.id}
+            <div className="text-left text-lg">
+              <button className="mr-2 inline-flex items-center rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                <FaEdit className="h-5 w-5" />
+              </button>
+              <button className="mr-2 inline-flex items-center rounded-lg bg-red-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
+                <FaTrash className="h-5 w-5" />
+              </button>
+            </div>
+          </td>
+        );
+      },
     },
   ];
   return (
@@ -120,7 +123,6 @@ const Index = () => {
           </div>
         </div>
       </div>
-      <TablePaginator/>
 
       <div className="">
         <div className="flex h-full flex-col justify-center overflow-auto">
