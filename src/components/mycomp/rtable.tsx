@@ -1,37 +1,55 @@
 /* eslint-disable react/jsx-key */
-import React from 'react'
-import TableHeader from './table-header';
-import TableRows from './table-rows';
+import React from "react";
+import TableHeader from "./table-header";
+import TableRows from "./table-rows";
 
+export type ColumnDefinitionType = {
+  key: string;
+  header: string;
+  width?: number;
+  render?: React.ReactNode;
+};
 
-export type ColumnDefinitionType<T, K extends keyof T> = {
-    key: K;
-    header: string;
-    width?: number;
-}
-
-export type TableProps<T, K extends keyof T> = {
+export type TableProps<T> = {
   data: Array<T>;
-  columns: Array<ColumnDefinitionType<T, K>>;
-}
+  columns: Array<ColumnDefinitionType>;
+  tableClassNames?: string;
+  trClassNames?: string;
+  tdClassNames?: string;
+  theadClassNames?: string;
+  thClassNames?: string;
+  thdivClassNames?: string;
+};
 
+const RTable = <T, K extends keyof T>({
+  data,
+  columns,
+  tableClassNames,
+  trClassNames,
+  tdClassNames,
+  theadClassNames,
+  thClassNames,
+  thdivClassNames,
+}: TableProps<T>): JSX.Element => {
+  // Use the state and functions returned from useTable to build your UI
 
+  return (
+    <table className={tableClassNames}>
+      <TableHeader
+        columns={columns}
+        theadClassNames={theadClassNames}
+        thClassNames={thClassNames}
+        trClassNames={trClassNames}
+        thdivClassNames={thdivClassNames}
+      />
+      <TableRows
+        data={data}
+        columns={columns}
+        trClassNames={trClassNames}
+        tdClassNames={tdClassNames}
+      />
+    </table>
+  );
+};
 
-
-const RTable = <T, K extends keyof T>({ data, columns }: TableProps<T, K>): JSX.Element => {
-    // Use the state and functions returned from useTable to build your UI
-    
-  
-    return (
-        <table >
-          <TableHeader columns={columns} />
-          <TableRows
-            data={data}
-            columns={columns}
-          />
-        </table>
-      );
-  }
-  
-
-export default RTable
+export default RTable;

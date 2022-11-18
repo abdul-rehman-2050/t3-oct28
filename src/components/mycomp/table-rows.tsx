@@ -1,38 +1,42 @@
 import { ColumnDefinitionType } from "./rtable";
 
-type TableRowsProps<T, K extends keyof T> = {
-    data: Array<T>;
-    columns: Array<ColumnDefinitionType<T, K>>;
-  }
-  
-  const style = {
-    border: '1px solid black'
-  }
+type TableRowsProps<T> = {
+  data: Array<T>;
+  columns: Array<ColumnDefinitionType>;
+  trClassNames? : string;
+  tdClassNames? : string;
+};
 
-  
-  
-  const TableRows = <T, K extends keyof T>({ data, columns }: TableRowsProps<T, K>): JSX.Element => {
-    type ObjectKey = keyof typeof columns;
-    const rows = data.map((row, index) => {
-      return (
-        <tr key={`row-${index}`}>
-          {columns.map((column, index2) => {
+const style = {
+  border: "1px solid black",
+};
+
+const TableRows = <T, K extends keyof T>({
+  data,
+  columns,
+  trClassNames,
+  tdClassNames,
+}: TableRowsProps<T>): JSX.Element => {
+  const rows = data.map((row, index) => {
+    return (
+      <tr key={`row-${index}`} className={trClassNames}>
+        {columns.map((column, index2) => {
+          if (column.render) {
+            return column.render;
+          } else {
             return (
-              <td key={`cell-${index2}`} style={style}>
-                {row[column.key]}
+              
+              <td key={`cell-${index2}`} className={`${tdClassNames} justify-center`}>
+                {(row as any)[column.key]}
               </td>
             );
           }
-          )}
-        </tr>
-      );
-    });
-  
-    return (
-      <tbody>
-        {rows}
-      </tbody>
+        })}
+      </tr>
     );
-  };
-  
-  export default TableRows;
+  });
+
+  return <tbody>{rows}</tbody>;
+};
+
+export default TableRows;

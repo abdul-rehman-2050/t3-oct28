@@ -5,11 +5,13 @@ import { ICredential } from "../../../types/global";
 import { trpc } from "../../../utils/trpc";
 import { Button, Flex, Badge, Box, Text } from "@chakra-ui/react";
 import { FaUserAlt, FaUserEdit, FaTrash, FaEdit } from "react-icons/fa";
-import RTable, { ColumnDefinitionType } from "../../../components/mycomp/rtable";
+import RTable, {
+  ColumnDefinitionType,
+} from "../../../components/mycomp/rtable";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ColumnsType } from "antd/lib/table";
-
+import TablePaginator from "../../../components/mycomp/table-paginator";
 
 const Index = () => {
   const removeMutation = trpc.credential.removeById.useMutation();
@@ -54,21 +56,37 @@ const Index = () => {
     return <>Loading...</>;
   }
 
-  const columns: ColumnDefinitionType<ICredential, keyof ICredential>[] = [
+  const columns: ColumnDefinitionType[] = [
     {
-      key: 'id',
-      header: 'ID',
-      width: 150
+      key: "id",
+      header: "ID",
+      width: 150,
     },
     {
-      key: 'username',
-      header: 'User Name',
+      key: "username",
+      header: "User Name",
     },
     {
-      key: 'email',
-      header: 'Email'
-    }
-  ]
+      key: "email",
+      header: "Email",
+    },
+    {
+      key: "Actions",
+      header: "Actions",
+      render: (
+        <td className="whitespace-nowrap p-2">
+          <div className="text-left text-lg">
+            <button className="mr-2 inline-flex items-center rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+              <FaEdit className="h-5 w-5" />
+            </button>
+            <button className="mr-2 inline-flex items-center rounded-lg bg-red-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
+              <FaTrash className="h-5 w-5" />
+            </button>
+          </div>
+        </td>
+      ),
+    },
+  ];
   return (
     <ChakraLayout>
       <Button
@@ -83,9 +101,26 @@ const Index = () => {
       >
         Add Credential
       </Button>
-      <div>
-      <RTable columns={columns} data={Data} />
+      <div className="mx-auto w-full  rounded-sm border border-gray-200 bg-white shadow-lg">
+        <header className="border-b border-gray-100 px-5 py-4">
+          <h2 className="font-semibold text-gray-800">Credentials</h2>
+        </header>
+        <div className="p-3">
+          <div className="overflow-x-auto">
+            <RTable
+              columns={columns}
+              data={Data}
+              tableClassNames="w-full table-auto"
+              trClassNames=""
+              tdClassNames="whitespace-nowrap p-2"
+              theadClassNames="bg-gray-50  uppercase "
+              thClassNames="whitespace-nowrap p-2"
+              thdivClassNames="text-left font-semibold"
+            />
+          </div>
+        </div>
       </div>
+      <TablePaginator/>
 
       <div className="">
         <div className="flex h-full flex-col justify-center overflow-auto">
