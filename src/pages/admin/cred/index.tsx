@@ -5,8 +5,11 @@ import { ICredential } from "../../../types/global";
 import { trpc } from "../../../utils/trpc";
 import { Button, Flex, Badge, Box, Text } from "@chakra-ui/react";
 import { FaUserAlt, FaUserEdit, FaTrash, FaEdit } from "react-icons/fa";
+import RTable, { ColumnDefinitionType } from "../../../components/mycomp/rtable";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { ColumnsType } from "antd/lib/table";
+
 
 const Index = () => {
   const removeMutation = trpc.credential.removeById.useMutation();
@@ -51,6 +54,21 @@ const Index = () => {
     return <>Loading...</>;
   }
 
+  const columns: ColumnDefinitionType<ICredential, keyof ICredential>[] = [
+    {
+      key: 'id',
+      header: 'ID',
+      width: 150
+    },
+    {
+      key: 'username',
+      header: 'User Name',
+    },
+    {
+      key: 'email',
+      header: 'Email'
+    }
+  ]
   return (
     <ChakraLayout>
       <Button
@@ -65,6 +83,9 @@ const Index = () => {
       >
         Add Credential
       </Button>
+      <div>
+      <RTable columns={columns} data={Data} />
+      </div>
 
       <div className="">
         <div className="flex h-full flex-col justify-center overflow-auto">
