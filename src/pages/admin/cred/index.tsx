@@ -6,7 +6,16 @@ import DataTable, {
   TableColumn,
   createTheme,
 } from "react-data-table-component";
-import { FaUserEdit, FaTrash, FaEdit, FaSearch, FaUber, FaRandom } from "react-icons/fa";
+import {
+  FaUserEdit,
+  FaTrash,
+  FaEdit,
+  FaSearch,
+  FaUber,
+  FaRandom,
+  FaAd,
+  FaPlus,
+} from "react-icons/fa";
 import Modal from "react-modal";
 import {
   Button,
@@ -163,6 +172,11 @@ function Index() {
     if (filtText == "") {
       setFiltData(Data);
     } else {
+      setFiltData(
+        Data.filter(function (e) {
+          return e.username.toLowerCase().includes(filtText.toLowerCase());
+        })
+      );
     }
   }, [Data, filtText]);
 
@@ -180,7 +194,9 @@ function Index() {
   }
 
   //=======================================================================
-
+  const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFiltText(e.target.value);
+  };
   //========================================================================
   const handleUpdate = (record: AllCredentialType) => {
     console.log(record);
@@ -291,7 +307,19 @@ function Index() {
 
   return (
     <ChakraLayout>
-      <div className="flex w-full gap-1">
+      <div className="flex w-full gap-1 ">
+        <Button
+          leftIcon={<FaPlus />}
+          colorScheme="teal"
+          variant="solid"
+          className="mb-3"
+          onClick={() => {
+            fakeMutation.mutate();
+          }}
+          disabled={fakeMutation.isLoading}
+        >
+          Add Credential
+        </Button>
         <Button
           leftIcon={<FaRandom />}
           colorScheme="teal"
@@ -304,33 +332,20 @@ function Index() {
         >
           Auto Credential
         </Button>
-        <div className="relative mx-auto  text-gray-600 mb-3">
-        
-          <input
-            className="h-10 rounded-lg border-2 border-gray-300 bg-white px-5 pr-16 text-sm focus:outline-none"
-            type="text"
-            name="search"
-            placeholder="Search"
-          />
-          <button  className="absolute right-0 top-0 mt-3 mr-4">
-            <FaSearch 
-            className="h-4 w-4 fill-current text-gray-600"
+        <div className="ml-auto">
+          <div className="relative   mb-3   text-gray-600">
+            <input
+              className=" h-10 rounded-lg border-2 border-gray-300 bg-white px-5 pr-16 text-sm focus:outline-none"
+              type="text"
+              name="search"
+              placeholder="Search"
+              onChange={handleSearchInputChange}
             />
-           
-          </button>
+            <button className="absolute right-0 top-0 mt-3 mr-4">
+              <FaSearch className="h-4 w-4 fill-current text-gray-600" />
+            </button>
+          </div>
         </div>
-        <Button
-          leftIcon={<FaUserEdit />}
-          colorScheme="teal"
-          variant="solid"
-          className="mb-3"
-          onClick={() => {
-            fakeMutation.mutate();
-          }}
-          disabled={fakeMutation.isLoading}
-        >
-          Add Credential
-        </Button>
       </div>
       <div className="mb-2">
         <DataTable
@@ -338,7 +353,6 @@ function Index() {
           columns={columns}
           data={filtData}
           pagination
-          selectableRows
           persistTableHead
           progressPending={!Data}
           highlightOnHover
