@@ -3,6 +3,7 @@ import { ICredential } from "../../types/global";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { AllCredentialType } from "../../pages/admin/cred";
 
 export const CredentialValidationSchema = z
   .object({
@@ -30,7 +31,7 @@ export type CredentialValidationSchemaType = z.infer<
 
 interface CredentialProps {
   credential?: ICredential | null;
-  submitFunction?: (cred: ICredential)=>void;
+  submitFunction?: (cred: AllCredentialType)=>void;
 }
 
 const UpdateCredential = (props: CredentialProps) => {
@@ -47,7 +48,13 @@ const UpdateCredential = (props: CredentialProps) => {
   const onSubmit: SubmitHandler<ICredential> = (data) => {
     console.log(data);
     if(props.submitFunction){
-        props.submitFunction(data)
+        props.submitFunction({
+          id: data.id,
+          username: data.username,
+          email: data.email,
+          password: data.password as string,
+          role: data.role as string,
+        })
     }
   };
 
@@ -150,7 +157,7 @@ const UpdateCredential = (props: CredentialProps) => {
                   type="password"
                   id="confirm-password"
                   placeholder="••••••••"
-                  className="mform-input w-48"
+                  className="mform-input w-48 ml-1"
                   {...register("confirmPassword")}
                 />
                 {errors.confirmPassword && (
