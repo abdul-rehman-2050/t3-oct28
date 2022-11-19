@@ -1,13 +1,28 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import ChakraLayout from "../../../layouts/chakra-layout";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import DataTable, { TableColumn } from "react-data-table-component";
-import { FaUserEdit, FaTrash, FaEdit } from "react-icons/fa";
-import Modal from 'react-modal';
-import { Button, Flex, Badge, Box, Text } from "@chakra-ui/react";
+import DataTable, {
+  TableColumn,
+  createTheme,
+} from "react-data-table-component";
+import { FaUserEdit, FaTrash, FaEdit, FaSearch, FaUber, FaRandom } from "react-icons/fa";
+import Modal from "react-modal";
+import {
+  Button,
+  Flex,
+  Badge,
+  Box,
+  Text,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  IconButton,
+} from "@chakra-ui/react";
+import { PhoneIcon, AddIcon, WarningIcon, SearchIcon } from "@chakra-ui/icons";
 import { trpc } from "../../../utils/trpc";
 import UpdateCredential from "../../../components/credentials/update";
+import styled from "styled-components";
 
 const customModelStyles = {
   content: {
@@ -19,6 +34,78 @@ const customModelStyles = {
     transform: "translate(-50%, -50%)",
   },
 };
+
+// createTheme creates a new theme named solarized that overrides the build in dark theme
+createTheme(
+  "solarized",
+  {
+    text: {
+      primary: "#268bd2",
+      secondary: "#2aa198",
+    },
+    background: {
+      default: "#002b36",
+    },
+    context: {
+      background: "#cb4b16",
+      text: "#FFFFFF",
+    },
+    divider: {
+      default: "#073642",
+    },
+    action: {
+      button: "rgba(0,0,0,.54)",
+      hover: "rgba(0,0,0,.08)",
+      disabled: "rgba(0,0,0,.12)",
+    },
+  },
+  "dark"
+);
+
+const TextField = styled.input`
+  height: 32px;
+  width: 200px;
+  border-radius: 3px;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border: 1px solid #e5e5e5;
+  padding: 0 32px 0 16px;
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+const ClearButton = styled(Button)`
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  height: 34px;
+  width: 32px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+// eslint-disable-next-line react/prop-types
+const FilterComponent = ({ filterText, onFilter, onClear }: any) => (
+  <>
+    <TextField
+      id="search"
+      type="text"
+      placeholder="Filter By Name"
+      aria-label="Search Input"
+      value={filterText}
+      onChange={onFilter}
+    />
+    <ClearButton type="button" onClick={onClear}>
+      X
+    </ClearButton>
+  </>
+);
 
 export type AllCredentialType = {
   id: number;
@@ -70,26 +157,36 @@ function Index() {
     getAllCredentials.data as AllCredentialType[]
   );
 
+  const [filtData, setFiltData] = useState(Data as AllCredentialType[] | []);
+  const [filtText, setFiltText] = useState<string>("");
+  useMemo(() => {
+    if (filtText == "") {
+      setFiltData(Data);
+    } else {
+    }
+  }, [Data, filtText]);
+
   const [editableCredential, setEditableCredential] =
     useState<AllCredentialType | null>(null);
 
-    
-    const [modalIsOpen, setIsOpen] = React.useState(false);
-  
-    function openModal() {
-      setIsOpen(true);
-    }
-  
-  
-    function closeModal() {
-      setIsOpen(false);
-    }
+  const [modalIsOpen, setIsOpen] = React.useState(false);
 
+  function openModal() {
+    setIsOpen(true);
+  }
+
+  function closeModal() {
+    setIsOpen(false);
+  }
+
+  //=======================================================================
+
+  //========================================================================
   const handleUpdate = (record: AllCredentialType) => {
     console.log(record);
     setEditableCredential(record);
     openModal();
-    
+
     //showModal();
   };
 
@@ -110,7 +207,7 @@ function Index() {
       };
       updateCredential.mutate(updateCred);
       console.log(Data[index]);
-      closeModal()
+      closeModal();
       toast.info("New valued requested to be updated", {
         position: "top-right",
         autoClose: 2500,
@@ -120,8 +217,6 @@ function Index() {
       console.log("No Data found");
     }
   };
-
-
 
   const columns: TableColumn<AllCredentialType>[] = [
     {
@@ -171,20 +266,20 @@ function Index() {
       name: "Actions",
       cell: (row) => {
         return (
-          <div className="text-left text-lg ">
-            <button
-              className=" inline-flex items-center rounded-lg bg-blue-700 p-2 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          <InputGroup gap={1}>
+            <IconButton
+              colorScheme="blue"
+              aria-label="Search database"
+              icon={<FaEdit />}
               onClick={() => handleUpdate(row)}
-            >
-              <FaEdit className="h-5 w-5" />
-            </button>
-            <button
+            />
+            <IconButton
+              colorScheme="red"
+              aria-label="Search database"
+              icon={<FaTrash />}
               onClick={() => handleRemove(row.id)}
-              className="ml-1 inline-flex items-center rounded-lg bg-red-700 p-2  text-center text-sm font-medium text-white hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
-            >
-              <FaTrash className="h-5 w-5" />
-            </button>
-          </div>
+            />
+          </InputGroup>
         );
       },
       ignoreRowClick: true,
@@ -196,25 +291,56 @@ function Index() {
 
   return (
     <ChakraLayout>
-      <Button
-        leftIcon={<FaUserEdit />}
-        colorScheme="teal"
-        variant="solid"
-        className="mb-3"
-        onClick={() => {
-          fakeMutation.mutate();
-        }}
-        disabled={fakeMutation.isLoading}
-      >
-        Add Credential
-      </Button>
+      <div className="flex w-full gap-1">
+        <Button
+          leftIcon={<FaRandom />}
+          colorScheme="teal"
+          variant="solid"
+          className="mb-3"
+          onClick={() => {
+            fakeMutation.mutate();
+          }}
+          disabled={fakeMutation.isLoading}
+        >
+          Auto Credential
+        </Button>
+        <div className="relative mx-auto  text-gray-600 mb-3">
+        
+          <input
+            className="h-10 rounded-lg border-2 border-gray-300 bg-white px-5 pr-16 text-sm focus:outline-none"
+            type="text"
+            name="search"
+            placeholder="Search"
+          />
+          <button  className="absolute right-0 top-0 mt-3 mr-4">
+            <FaSearch 
+            className="h-4 w-4 fill-current text-gray-600"
+            />
+           
+          </button>
+        </div>
+        <Button
+          leftIcon={<FaUserEdit />}
+          colorScheme="teal"
+          variant="solid"
+          className="mb-3"
+          onClick={() => {
+            fakeMutation.mutate();
+          }}
+          disabled={fakeMutation.isLoading}
+        >
+          Add Credential
+        </Button>
+      </div>
       <div className="mb-2">
         <DataTable
           title="Credentials"
           columns={columns}
-          data={Data}
-          progressPending={!Data}
+          data={filtData}
           pagination
+          selectableRows
+          persistTableHead
+          progressPending={!Data}
           highlightOnHover
           pointerOnHover
         />
@@ -222,18 +348,16 @@ function Index() {
 
       <Modal
         isOpen={modalIsOpen}
-        
         onRequestClose={closeModal}
         style={customModelStyles}
         contentLabel="Update User"
       >
-        
         <div>
-            <UpdateCredential
-              credential={editableCredential}
-              submitFunction={updatedValue}
-            />
-            </div>
+          <UpdateCredential
+            credential={editableCredential}
+            submitFunction={updatedValue}
+          />
+        </div>
       </Modal>
       <footer>
         <div className=" mt-3 w-full max-w-3xl justify-start px-3">
