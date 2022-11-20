@@ -75,9 +75,26 @@ model Credential {
   username  String   @unique
   email     String   @unique
   profile   Profile?
-  password  String 
+  password  String
   role      String   @default("USER")
   createdAt DateTime @default(now())
+}
+
+model Manufacturer {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  models    Model[]
+  createdAt DateTime @default(now())
+}
+
+model Model {
+  id              Int          @id @default(autoincrement())
+  name            String
+  manufacturereID Int
+  createdAt       DateTime     @default(now())
+  manufacturer    Manufacturer @relation(fields: [manufacturereID], references: [id], onDelete: Cascade)
+
+  @@unique([name, manufacturereID])
 }
 
 model Profile {
