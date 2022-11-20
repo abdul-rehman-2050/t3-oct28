@@ -32,6 +32,7 @@ import { PhoneIcon, AddIcon, WarningIcon, SearchIcon } from "@chakra-ui/icons";
 import { trpc } from "../../../utils/trpc";
 import UpdateCredential from "../../../components/credentials/update";
 import styled from "styled-components";
+import PanelLayout from "../../../layouts/panel";
 
 const customModelStyles = {
   content: {
@@ -99,22 +100,7 @@ const ClearButton = styled(Button)`
   justify-content: center;
 `;
 
-// eslint-disable-next-line react/prop-types
-const FilterComponent = ({ filterText, onFilter, onClear }: any) => (
-  <>
-    <TextField
-      id="search"
-      type="text"
-      placeholder="Filter By Name"
-      aria-label="Search Input"
-      value={filterText}
-      onChange={onFilter}
-    />
-    <ClearButton type="button" onClick={onClear}>
-      X
-    </ClearButton>
-  </>
-);
+
 
 export type AllCredentialType = {
   id: number;
@@ -306,7 +292,7 @@ function Index() {
   ];
 
   return (
-    <ChakraLayout>
+    <PanelLayout>
       <div className="flex w-full gap-1 ">
         <Button
           leftIcon={<FaPlus />}
@@ -379,7 +365,7 @@ function Index() {
           <ToastContainer />
         </div>
       </footer>
-    </ChakraLayout>
+      </PanelLayout>
   );
 }
 
