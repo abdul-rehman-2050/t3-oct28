@@ -25,11 +25,11 @@ function Sidebartest({ isOpen }: SidebarProps) {
   const Menus = [
     { title: "Dashboard", src: <FaDatabase size={20} /> },
     { title: "Inbox", src: <FaInbox size={20} /> },
-    { title: "Accounts", src: <FaChartBar size={20} />, gap: true },
+    { title: "Accounts", src: <FaChartBar size={20} />, gap: false },
     { title: "Schedule ", src: <FaCalendar size={20} /> },
     { title: "Search", src: <FaSearch size={20} /> },
     { title: "Analytics", src: <FaChartBar size={20} /> },
-    { title: "Files ", src: <FaFolder size={20} />, gap: true },
+    { title: "Files ", src: <FaFolder size={20} />, gap: false },
     { title: "Settings", src: <FaCog size={20} />, linkto: "/admin/cred" },
   ];
 
