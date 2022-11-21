@@ -29,7 +29,7 @@ function Sidebartest({ isOpen }: SidebarProps) {
     { title: "Schedule ", src: <FaCalendar size={20} /> },
     { title: "Search", src: <FaSearch size={20} /> },
     { title: "Analytics", src: <FaChartBar size={20} /> },
-    { title: "Files ", src: <FaFolder size={20} />, gap: false },
+    { title: "Files ", src: <FaFolder size={20} />, gap: false,linkto:"/admin/model" },
     { title: "Settings", src: <FaCog size={20} />, linkto: "/admin/cred" },
   ];
 

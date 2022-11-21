@@ -93,8 +93,8 @@ model Model {
   manufacturereID Int
   createdAt       DateTime     @default(now())
   manufacturer    Manufacturer @relation(fields: [manufacturereID], references: [id], onDelete: Cascade)
-
-  @@unique([name, manufacturereID])
+  
+ 
 }
 
 model Profile {
