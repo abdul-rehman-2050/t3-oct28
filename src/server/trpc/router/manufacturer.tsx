@@ -20,6 +20,21 @@ export const manufacturerRouter = router({
           },
         };
     }),
+    removeById: publicProcedure
+    .input(z.object({ id: z.number() }))
+    .mutation(async ({ ctx, input }) => {
+      const record = await ctx.prisma.manufacturer.delete({
+        where: {
+          id: input.id,
+        },
+      });
+      return {
+        status: "success",
+        data: {
+          record,
+        },
+      };
+    }),
   getAll: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.manufacturer.findMany();
   }),

@@ -6,6 +6,12 @@ type TagProps = {
   onDelete: (key: number) => void;
 };
 
+type TagProps2 = {
+ id?: number;
+ name: string;
+ createdAt?: Date;
+}
+
 export function Tag({ title, id, onDelete }: TagProps) {
   return (
     <span
@@ -30,19 +36,22 @@ export function Tag({ title, id, onDelete }: TagProps) {
 }
 
 type AddTagProps = {
-    header?:string
+    header?:string;
+    
     onCreate: (title:string)=>void;
+    onRemove: (id:number)=>void;
 }
 
 
-function AddTag({header,onCreate}:AddTagProps) {
-  const [list, setList] = React.useState(["Iphone", "Android", "Maker"]);
+function AddTag({header,onCreate,onRemove}:AddTagProps) {
+  const [list, setList] = React.useState<string[]>([]);
   const [curItem, setCurItem] = React.useState("");
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
     const newValue = e.target.value;
     if (newValue.includes(",")) {
       if (curItem.length > 1) {
-        setList([...list, curItem]);
+
+        setList([...list, curItem]);/// this tis the value which i need to fix 
       }
       setCurItem("");
     } else {
