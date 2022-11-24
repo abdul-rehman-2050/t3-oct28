@@ -7,7 +7,7 @@ function Index() {
   return (
         <PanelLayout>
             <div>
-                <AddTag/>
+                <AddTag header='Manufacturer'/>
             </div>
         </PanelLayout>
 

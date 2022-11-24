@@ -2,16 +2,17 @@ import React from "react";
 
 type TagProps = {
   title: string;
-  onDelete: ()=>void
+  id: number;
+  onDelete: (key: number) => void;
 };
 
-export function Tag({ title,onDelete }: TagProps) {
+export function Tag({ title, id, onDelete }: TagProps) {
   return (
     <span
       className="m-1 flex cursor-pointer flex-wrap items-center justify-between rounded bg-gray-200 px-4 py-2 text-xs font-bold leading-loose hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 sm:text-sm"
-      onClick={onDelete}
+      onClick={() => onDelete(id)}
     >
-      {title}
+      { title}
       <svg
         xmlns="http://www.w3.org/2000/svg"
         className="ml-4 h-3 w-3 text-gray-500 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-300 sm:h-4 sm:w-4"
@@ -28,39 +29,49 @@ export function Tag({ title,onDelete }: TagProps) {
   );
 }
 
-function AddTag() {
+type AddTagProps = {
+    header?:string
+}
+
+
+function AddTag({header}:AddTagProps) {
   const [list, setList] = React.useState(["Iphone", "Android", "Maker"]);
-  const [curItem, setCurItem] = React.useState("")
-  function handleInputChange(e:React.ChangeEvent<HTMLInputElement>){
+  const [curItem, setCurItem] = React.useState("");
+  function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
     const newValue = e.target.value;
-    if(newValue.includes(",")){
-        
-        if(curItem.length>1){
-            setList([...list, curItem])
-        }        
-        setCurItem("")
-    }else{
-        setCurItem(newValue)
-
+    if (newValue.includes(",")) {
+      if (curItem.length > 1) {
+        setList([...list, curItem]);
+      }
+      setCurItem("");
+    } else {
+      setCurItem(newValue);
     }
-
   }
 
-  
-  const handleDelete = (indexToDelete:number) => {
+  const handleKeyDown = (event:React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+        if (curItem.length > 1) {
+            setList([...list, curItem]);
+          }
+          setCurItem("");
+    }
+  }
+
+  const handleDelete = (indexToDelete: number) => {
+    
     setList((existingList) =>
       existingList.filter((_, index) => index !== indexToDelete)
     );
   };
 
-
   return (
     <>
-      <div className="w-full mt-1 flex flex-col items-center space-y-4 sm:mx-0">
-        <div className="w-full items-center overflow-hidden rounded bg-white py-8 px-8 shadow-lg hover:shadow-xl dark:bg-gray-800 sm:w-fit ">
+      <div className=" mt-1 flex  flex-col items-center space-y-4 sm:mx-0">
+        <div className="min-w-full items-center overflow-hidden rounded bg-white py-8 px-8 shadow-lg hover:shadow-xl dark:bg-gray-800 sm:w-fit ">
           <div className="flex flex-row items-center justify-start">
             <h1 className="mr-2 text-lg font-bold text-gray-800 dark:text-gray-100 sm:text-2xl">
-              Tags
+              {(header? header : "Tags")}
             </h1>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -96,19 +107,26 @@ function AddTag() {
               <input
                 className="w-full border-transparent bg-gray-100 text-sm outline-none focus:border-transparent focus:ring-0 dark:bg-gray-700 dark:text-gray-200 sm:text-base"
                 type="text"
-                placeholder="Add a tag..."
-                value= {curItem}
+                placeholder={`Add a ${(header?header:"Tag")}...`}
+                value={curItem}
                 onChange={handleInputChange}
+                onKeyDown={handleKeyDown}
               />
             </div>
           </form>
           <div className="-m-1 my-3 flex flex-wrap">
-           
             {list.map((listItem, key) => {
-              return <Tag title={listItem} key={key} onDelete={()=>handleDelete}/>;
+              return (
+                <div key={key}>
+                  
+                  <Tag
+                    title={listItem}
+                    id={key}
+                    onDelete={(key) => handleDelete(key)}
+                  />
+                </div>
+              );
             })}
-            
-            
           </div>
         </div>
       </div>
