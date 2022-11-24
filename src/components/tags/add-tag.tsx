@@ -31,10 +31,11 @@ export function Tag({ title, id, onDelete }: TagProps) {
 
 type AddTagProps = {
     header?:string
+    onCreate: (title:string)=>void;
 }
 
 
-function AddTag({header}:AddTagProps) {
+function AddTag({header,onCreate}:AddTagProps) {
   const [list, setList] = React.useState(["Iphone", "Android", "Maker"]);
   const [curItem, setCurItem] = React.useState("");
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -53,8 +54,10 @@ function AddTag({header}:AddTagProps) {
     if (event.key === 'Enter') {
         if (curItem.length > 1) {
             setList([...list, curItem]);
+            onCreate(curItem)
           }
           setCurItem("");
+
     }
   }
 
